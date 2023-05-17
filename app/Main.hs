@@ -1,3 +1,5 @@
+{-# LANGUAGE LambdaCase #-}
+
 import Config
 import Control.Monad.State
 import Data.List (isSuffixOf)
@@ -96,7 +98,7 @@ execute line env =
                         >>= ( \outFile ->
                                 liftIO (mapM_ (saveGlobal outFile) (reverse env) >> hClose outFile)
                             )
-                          >> outputStrLn ("--- successfully exported to " <> importPath <> f <> ".plam")
+                        >> outputStrLn ("--- successfully exported to " <> importPath <> f <> ".plam")
                     )
                   True -> outputStrLn ("--- export failed : " <> f <> " already exists")
               )

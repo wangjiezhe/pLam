@@ -1,3 +1,5 @@
+{-# LANGUAGE LambdaCase #-}
+
 module Helper where
 
 import Control.Monad.State
@@ -162,7 +164,9 @@ showProgResult env evop exp num =
 
 showSummary :: Environment -> Expression -> Int -> String
 showSummary env exp count =
-  boldGreen "|> " <> yellow "reductions count               : " <> boldRed (show count <> "\n")
+  boldGreen "|> "
+    <> yellow "reductions count               : "
+    <> boldRed (show count <> "\n")
     <> boldGreen "|> "
     <> yellow "uncurried "
     <> boldYellow "β-normal"

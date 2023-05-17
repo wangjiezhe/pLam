@@ -1,3 +1,5 @@
+{-# LANGUAGE LambdaCase #-}
+
 module Evaluator where
 
 import Control.Monad.State
@@ -26,7 +28,7 @@ evalApp f x =
         )
 
 evalExp :: Expression -> Program (Failable Expression)
-evalExp x@(Variable (LambdaVar n i)) = pure $ Right x --evalVar ([n] <> showVarHelper i)
+evalExp x@(Variable (LambdaVar n i)) = pure $ Right x -- evalVar ([n] <> showVarHelper i)
 evalExp (Abstraction v e) = evalAbs v e
 evalExp (Application m n) = evalApp m n
 evalExp (EnvironmentVar ev) = evalVar ev
