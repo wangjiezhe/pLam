@@ -10,7 +10,7 @@ import Parser
 import Reducer
 import Syntax
 import System.Console.Haskeline
-import System.Directory (doesFileExist)
+import System.Directory (doesFileExist, getHomeDirectory)
 import System.Environment
 import System.Exit
 import System.IO (IOMode (WriteMode), hClose, hFlush, hPutStrLn, openFile, stdout)
@@ -96,7 +96,7 @@ execute line env =
                         >>= ( \outFile ->
                                 liftIO (mapM_ (saveGlobal outFile) (reverse env) >> hClose outFile)
                             )
-                          >> outputStrLn ("--- successfully exported to import/" <> f <> ".plam")
+                          >> outputStrLn ("--- successfully exported to " <> importPath <> f <> ".plam")
                     )
                   True -> outputStrLn ("--- export failed : " <> f <> " already exists")
               )
@@ -182,4 +182,5 @@ main = do
     FileInput file -> readFile file >>= (\content -> execJustProg (lines content) []) >> putStrLn (boldGreen "Done.")
     Repl noHeading ->
       unless noHeading (putStrLn heading)
-        >> runInputT defaultSettings {historyFile = Just ".plam-history"} (repl [])
+        >> getHomeDirectory
+        >>= (\homePath -> runInputT defaultSettings {historyFile = Just (homePath <> "/.plam-history")} (repl []))
